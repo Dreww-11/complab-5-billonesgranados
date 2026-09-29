@@ -1,0 +1,13 @@
+
+{
+  "name": "inventory-service",
+  "version": "1.0.0",
+  "description": "Inventory Service for the shopping microservices application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.5"
+  }
+}

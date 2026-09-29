@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopEase | Online Store</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #1f2937;
+    }
+
+    header {
+      background: #1d4ed8;
+      color: white;
+      padding: 24px 8%;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+    }
+
+    header p {
+      margin: 0;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 35px auto;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      margin-bottom: 18px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .product, .order-box {
+      background: white;
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    }
+
+    .product-icon {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    .product h3 {
+      margin: 5px 0;
+    }
+
+    .price {
+      color: #1d4ed8;
+      font-size: 20px;
+      font-weight: bold;
+      margin: 12px 0;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 12px 0 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    button {
+      border: none;
+      border-radius: 6px;
+      padding: 12px 16px;
+      background: #1d4ed8;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+
+    button:disabled {
+      background: #94a3b8;
+      cursor: wait;
+    }
+
+    .order-box {
+      margin-top: 30px;
+    }
+
+    #result {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-wrap: anywhere;
+    }
+
+    .success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #64748b;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>ShopEase</h1>
+    <p>Simple Online Shopping — Microservices Demo</p>
+  </header>
+
+  <main>
+    <h2 class="section-title">Our Products</h2>
+
+    <section class="products">
+      <article class="product">
+        <div class="product-icon">🎒</div>
+        <h3>Everyday Backpack</h3>
+        <p>Durable backpack for school and travel.</p>
+        <div class="price">$39.99</div>
+        <button type="button" onclick="chooseProduct('p1')">
+          Select Product
+        </button>
+      </article>
+
+      <article class="product">
+        <div class="product-icon">🎧</div>
+        <h3>Wireless Headphones</h3>
+        <p>Enjoy your favorite music anywhere.</p>
+        <div class="price">$59.99</div>
+        <button type="button" onclick="chooseProduct('p2')">
+          Select Product
+        </button>
+      </article>
+
+      <article class="product">
+        <div class="product-icon">🥤</div>
+        <h3>Reusable Bottle</h3>
+        <p>A reusable bottle for everyday use.</p>
+        <div class="price">$14.99</div>
+        <button type="button" onclick="chooseProduct('p3')">
+          Select Product
+        </button>
+      </article>
+    </section>
+
+    <section class="order-box">
+      <h2>Place Your Order</h2>
+
+      <form id="orderForm">
+        <label for="customer">Customer Name</label>
+        <input
+          id="customer"
+          name="customer"
+          type="text"
+          placeholder="Enter your name"
+          required
+        >
+
+        <label for="product">Choose Product</label>
+        <select id="product" name="product" required>
+          <option value="p1">Everyday Backpack — $39.99</option>
+          <option value="p2">Wireless Headphones — $59.99</option>
+          <option value="p3">Reusable Bottle — $14.99</option>
+        </select>
+
+        <label for="quantity">Quantity</label>
+        <input
+          id="quantity"
+          name="quantity"
+          type="number"
+          min="1"
+          max="20"
+          value="1"
+          required
+        >
+
+        <button id="submitButton" type="submit">
+          Submit Order
+        </button>
+      </form>
+
+      <div id="result" class="hidden" role="status"></div>
+    </section>
+  </main>
+
+  <footer>
+    ShopEase Microservices Project
+  </footer>
+
+  <script>
+    const products = {
+      p1: {
+        productId: 'p1',
+        name: 'Everyday Backpack',
+        unitPrice: 39.99
+      },
+      p2: {
+        productId: 'p2',
+        name: 'Wireless Headphones',
+        unitPrice: 59.99
+      },
+      p3: {
+        productId: 'p3',
+        name: 'Reusable Bottle',
+        unitPrice: 14.99
+      }
+    };
+
+    function chooseProduct(productId) {
+      document.getElementById('product').value = productId;
+
+      document.getElementById('orderForm').scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    }
+
+    document.getElementById('orderForm').addEventListener(
+      'submit',
+      async function (event) {
+        event.preventDefault();
+
+        const customer = document.getElementById('customer').value.trim();
+        const productId = document.getElementById('product').value;
+        const quantity = Number(document.getElementById('quantity').value);
+        const selectedProduct = products[productId];
+
+        const result = document.getElementById('result');
+        const submitButton = document.getElementById('submitButton');
+
+        if (!customer || !selectedProduct || quantity < 1 || quantity > 20) {
+          result.className = 'error';
+          result.textContent = 'Please check your order details.';
+          return;
+        }
+
+        const order = {
+          customer: customer,
+          items: [
+            {
+              productId: selectedProduct.productId,
+              name: selectedProduct.name,
+              quantity: quantity,
+              unitPrice: selectedProduct.unitPrice
+            }
+          ]
+        };
+
+        submitButton.disabled = true;
+        submitButton.textContent = 'Submitting...';
+        result.className = 'hidden';
+        result.textContent = '';
+
+        try {
+          const response = await fetch('/api/orders', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(order)
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || 'Unable to place order.');
+          }
+
+          result.className = 'success';
+          result.textContent =
+            'Order submitted successfully! ' +
+            'Order ID: ' + (data.orderId || data.id || 'Created') +
+            '. Total: $' +
+            Number(data.total ?? selectedProduct.unitPrice * quantity).toFixed(2);
+        } catch (error) {
+          result.className = 'error';
+          result.textContent =
+            'Order could not be submitted. Please check if the services are running. ' +
+            error.message;
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Submit Order';
+        }
+      }
+    );
+  </script>
+</body>
+</html>
